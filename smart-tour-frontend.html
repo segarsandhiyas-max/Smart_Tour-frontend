@@ -1,0 +1,3523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTour - Budget-Friendly Travel & Tourism Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --accent-color: #fbbc04;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --border-color: #dadce0;
+            --error-color: #ea4335;
+            --success-color: #34a853;
+            --payment-color: #673ab7;
+            --hotel-color: #00897b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-menu button {
+            background: none;
+            border: none;
+            color: var(--dark-color);
+            font-size: 18px;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #1765cc;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Form Styles */
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 800px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-size: 28px;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 11.11%; /* 100% divided by 9 steps */
+            transition: width 0.3s ease;
+        }
+
+        .step-indicators {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: -1;
+        }
+
+        .step:last-child::after {
+            display: none;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+
+        .step.active .step-circle {
+            background-color: var(--primary-color);
+        }
+
+        .step.completed .step-circle {
+            background-color: var(--success-color);
+        }
+
+        .step-title {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .step.active .step-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .checkbox-group, .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item, .radio-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-item input, .radio-item input {
+            margin-right: 8px;
+        }
+
+        .preference-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .preference-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .preference-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        .preference-card h4 {
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+
+        .preference-card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .itinerary-item {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .itinerary-item h4 {
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+
+        .itinerary-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .budget-summary {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .budget-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .budget-row.total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .rating-stars i {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .rating-stars i.active {
+            color: var(--accent-color);
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: var(--success-color);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        /* Hotel Selection Styles */
+        .hotel-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .hotel-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            gap: 15px;
+        }
+
+        .hotel-card:hover {
+            border-color: var(--hotel-color);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hotel-card.selected {
+            border-color: var(--hotel-color);
+            background-color: rgba(0, 137, 123, 0.05);
+        }
+
+        .hotel-card.budget-friendly {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .hotel-image {
+            width: 120px;
+            height: 100px;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hotel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hotel-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .hotel-info {
+            flex: 1;
+        }
+
+        .hotel-name {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+
+        .hotel-type {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: var(--hotel-color);
+            margin-bottom: 5px;
+        }
+
+        .hotel-type i {
+            margin-right: 5px;
+        }
+
+        .hotel-rating {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .hotel-rating i {
+            color: var(--accent-color);
+            font-size: 14px;
+        }
+
+        .hotel-rating span {
+            margin-left: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .hotel-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .hotel-feature {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .hotel-feature i {
+            margin-right: 4px;
+            color: var(--secondary-color);
+        }
+
+        .hotel-price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .hotel-price span {
+            font-size: 12px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .budget-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+            text-transform: uppercase;
+        }
+
+        /* Nearby Places Styles */
+        .nearby-places {
+            margin-top: 25px;
+        }
+
+        .nearby-places h4 {
+            font-size: 18px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nearby-places h4 i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .place-card {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .place-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .place-icon {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .place-name {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .place-distance {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .place-category {
+            font-size: 12px;
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+
+        /* Bus Selection Styles */
+        .bus-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .bus-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .bus-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .bus-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        .bus-card.budget-friendly {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .bus-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .bus-name {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .bus-price {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .bus-timing {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        .bus-timing i {
+            margin-right: 5px;
+        }
+
+        .bus-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .bus-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .bus-feature {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .bus-feature i {
+            margin-right: 4px;
+            color: var(--secondary-color);
+        }
+
+        /* Seat Selection Styles */
+        .seat-selection-container {
+            margin-top: 20px;
+        }
+
+        .seat-layout {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .bus-illustration {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .bus-diagram {
+            width: 100%;
+            max-width: 600px;
+            height: 80px;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .driver-area {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: #bdbdbd;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .seat {
+            aspect-ratio: 1;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .seat:hover {
+            background-color: #c5cae9;
+        }
+
+        .seat.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .seat.occupied {
+            background-color: var(--error-color);
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .seat-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            border-radius: 3px;
+        }
+
+        .available {
+            background-color: #e0e0e0;
+        }
+
+        .selected-legend {
+            background-color: var(--primary-color);
+        }
+
+        .occupied-legend {
+            background-color: var(--error-color);
+        }
+
+        .seat-summary {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .seat-summary h4 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .selected-seats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .selected-seat-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Payment Styles */
+        .payment-container {
+            margin-top: 20px;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: var(--payment-color);
+        }
+
+        .payment-method.selected {
+            border-color: var(--payment-color);
+            background-color: rgba(103, 58, 183, 0.05);
+        }
+
+        .payment-method i {
+            font-size: 24px;
+            color: var(--payment-color);
+            margin-bottom: 8px;
+        }
+
+        .payment-form {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .payment-form h4 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .card-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .card-row .form-group {
+            flex: 1;
+        }
+
+        .card-element {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .order-summary {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .order-summary h4 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .promo-code {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .promo-code input {
+            flex: 1;
+        }
+
+        .promo-code button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .payment-button {
+            width: 100%;
+            background-color: var(--payment-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .payment-button:hover {
+            background-color: #5e35b1;
+        }
+
+        .security-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .security-info i {
+            color: var(--success-color);
+            margin-right: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .step-indicators {
+                flex-wrap: wrap;
+            }
+
+            .step-title {
+                font-size: 12px;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+
+            .seat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .places-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bus-card, .hotel-card {
+                flex-direction: column;
+            }
+
+            .hotel-image {
+                width: 100%;
+                height: 150px;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-close:hover {
+            color: var(--dark-color);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* API Status Indicator */
+        .api-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--dark-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .api-status i {
+            margin-right: 8px;
+        }
+
+        .api-status.connected {
+            background-color: var(--success-color);
+        }
+
+        .api-status.disconnected {
+            background-color: var(--error-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-map-marked-alt"></i>
+                SmartTour
+            </a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Destinations</a></li>
+                <li><a href="#">My Trips</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="user-menu">
+                <button id="loginBtn"><i class="fas fa-user"></i></button>
+                <button id="notificationBtn"><i class="fas fa-bell"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Budget-Friendly Travel Planning</h1>
+            <p>All-in-One Travel & Tourism Platform for Easy, Safe & Affordable Travel</p>
+            <a href="#planning-form" class="btn">Plan Your Trip</a>
+            <a href="#" class="btn btn-outline">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Planning Form -->
+    <section id="planning-form" class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Plan Your Perfect Trip</h2>
+                <p>Follow these simple steps to create your personalized travel itinerary</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+
+            <div class="step-indicators">
+                <div class="step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <div class="step-title">Login</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-title">Details</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-title">Traveler</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-title">Preferences</div>
+                </div>
+                <div class="step" data-step="5">
+                    <div class="step-circle">5</div>
+                    <div class="step-title">Itinerary</div>
+                </div>
+                <div class="step" data-step="6">
+                    <div class="step-circle">6</div>
+                    <div class="step-title">Hotel</div>
+                </div>
+                <div class="step" data-step="7">
+                    <div class="step-circle">7</div>
+                    <div class="step-title">Bus</div>
+                </div>
+                <div class="step" data-step="8">
+                    <div class="step-circle">8</div>
+                    <div class="step-title">Payment</div>
+                </div>
+                <div class="step" data-step="9">
+                    <div class="step-circle">9</div>
+                    <div class="step-title">Confirm</div>
+                </div>
+            </div>
+
+            <form id="travelForm">
+                <!-- Step 1: Secure Login/Signup -->
+                <div class="form-step active" data-step="1">
+                    <h3>Secure Login/Signup</h3>
+                    <p>Quickly access your personalized travel dashboard by logging in or signing up in just a few clicks.</p>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                        <div class="error-message">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                        <div class="error-message">Password must be at least 8 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <p>Don't have an account? <a href="#" id="signupLink">Sign up</a></p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Enter Travel Details -->
+                <div class="form-step" data-step="2">
+                    <h3>Enter Travel Details</h3>
+                    <p>Input your source, destination, dates, and number of travellers to kickstart your adventure.</p>
+                    
+                    <div class="form-group">
+                        <label for="source">Source</label>
+                        <input type="text" id="source" class="form-control" placeholder="Where are you traveling from?" required>
+                        <div class="error-message">Please enter a source</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="destination">Destination</label>
+                        <input type="text" id="destination" class="form-control" placeholder="Where do you want to go?" required>
+                        <div class="error-message">Please enter a destination</div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" id="startDate" class="form-control" required>
+                            <div class="error-message">Please select a start date</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate" class="form-control" required>
+                            <div class="error-message">Please select an end date</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="travelers">Number of Travelers</label>
+                        <select id="travelers" class="form-control" required>
+                            <option value="">Select number of travelers</option>
+                            <option value="1">1 Traveler</option>
+                            <option value="2">2 Travelers</option>
+                            <option value="3">3 Travelers</option>
+                            <option value="4">4 Travelers</option>
+                            <option value="5+">5+ Travelers</option>
+                        </select>
+                        <div class="error-message">Please select number of travelers</div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Select Traveller Type -->
+                <div class="form-step" data-step="3">
+                    <h3>Select Traveller Type</h3>
+                    <p>Are you a solo explorer, family vacationer, or adventure seeker? Tailor your plan to your style.</p>
+                    
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="solo" name="travelerType" value="solo">
+                            <label for="solo">
+                                <div class="preference-card">
+                                    <h4><i class="fas fa-user"></i> Solo Explorer</h4>
+                                    <p>For individual travelers seeking independence and unique experiences</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" id="family" name="travelerType" value="family">
+                            <label for="family">
+                                <div class="preference-card">
+                                    <h4><i class="fas fa-users"></i> Family Vacationer</h4>
+                                    <p>Perfect for families with children looking for fun and safe activities</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" id="couple" name="travelerType" value="couple">
+                            <label for="couple">
+                                <div class="preference-card">
+                                    <h4><i class="fas fa-heart"></i> Romantic Getaway</h4>
+                                    <p>For couples seeking romantic experiences and quality time together</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" id="group" name="travelerType" value="group">
+                            <label for="group">
+                                <div class="preference-card">
+                                    <h4><i class="fas fa-user-friends"></i> Group Adventure</h4>
+                                    <p>For groups of friends or colleagues seeking shared experiences</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="error-message">Please select a traveler type</div>
+                </div>
+
+                <!-- Step 4: Choose Preferences -->
+                <div class="form-step" data-step="4">
+                    <h3>Choose Preferences</h3>
+                    <p>Refine your trip with specific interests: cultural sites, outdoor activities, or culinary experiences.</p>
+                    
+                    <div class="form-group">
+                        <label>What interests you most? (Select all that apply)</label>
+                        <div class="checkbox-group" id="preferencesContainer">
+                            <div class="spinner"></div>
+                        </div>
+                        <div class="error-message">Please select at least one preference</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="budget">Budget Range (per person)</label>
+                        <select id="budget" class="form-control" required>
+                            <option value="">Select your budget range</option>
+                            <option value="budget">Budget (₹0 - ₹5,000)</option>
+                            <option value="mid-range">Mid-range (₹5,000 - ₹15,000)</option>
+                            <option value="luxury">Luxury (₹15,000+)</option>
+                        </select>
+                        <div class="error-message">Please select a budget range</div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Customised Itinerary Generation -->
+                <div class="form-step" data-step="5">
+                    <h3>Customised Itinerary Generation</h3>
+                    <p>Receive a comprehensive plan including attractions, bus/hotel bookings, bike rentals, and local recommendations. Safety insights are integrated for peace of mind.</p>
+                    
+                    <div class="success-message" id="itinerarySuccessMessage" style="display: none;">
+                        <i class="fas fa-check-circle"></i> Your personalized itinerary has been generated based on your preferences!
+                    </div>
+                    
+                    <div id="itineraryContainer">
+                        <div class="spinner" id="itinerarySpinner"></div>
+                        <!-- Itinerary items will be dynamically generated here -->
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="button" class="btn" id="regenerateItinerary">Regenerate Itinerary</button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Hotel Booking -->
+                <div class="form-step" data-step="6">
+                    <h3>Hotel Booking</h3>
+                    <p>Select your preferred accommodation type and discover nearby places to explore.</p>
+                    
+                    <div id="hotelOptions" class="hotel-options">
+                        <!-- Hotel options will be dynamically loaded here -->
+                        <div class="spinner"></div>
+                    </div>
+                    
+                    <div class="nearby-places">
+                        <h4><i class="fas fa-map-marker-alt"></i> Nearby Places to Explore</h4>
+                        
+                        <div class="places-grid" id="placesGrid">
+                            <!-- Places will be dynamically loaded here -->
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7: Bus Booking & Seat Selection -->
+                <div class="form-step" data-step="7">
+                    <h3>Bus Booking & Seat Selection</h3>
+                    <p>Select your preferred bus service and choose your seats for a comfortable journey.</p>
+                    
+                    <div id="busOptions" class="bus-options">
+                        <!-- Bus options will be dynamically loaded here -->
+                        <div class="spinner"></div>
+                    </div>
+                    
+                    <div class="seat-selection-container">
+                        <h4>Select Your Seats</h4>
+                        
+                        <div class="seat-layout">
+                            <div class="bus-illustration">
+                                <div class="bus-diagram">
+                                    <div class="driver-area">Driver</div>
+                                </div>
+                            </div>
+                            
+                            <div class="seat-grid" id="seatGrid">
+                                <!-- Seats will be generated by JavaScript -->
+                            </div>
+                            
+                            <div class="seat-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color available"></div>
+                                    <span>Available</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color selected-legend"></div>
+                                    <span>Selected</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color occupied-legend"></div>
+                                    <span>Occupied</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="seat-summary">
+                            <h4>Selected Seats</h4>
+                            <div class="selected-seats" id="selectedSeats">
+                                <!-- Selected seats will be displayed here -->
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Total Price</label>
+                                    <input type="text" id="totalSeatPrice" class="form-control" value="₹0" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Number of Seats</label>
+                                    <input type="text" id="numberOfSeats" class="form-control" value="0" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 8: Payment -->
+                <div class="form-step" data-step="8">
+                    <h3>Payment</h3>
+                    <p>Complete your booking by selecting a payment method and providing your payment details.</p>
+                    
+                    <div class="payment-container">
+                        <h4>Select Payment Method</h4>
+                        
+                        <div class="payment-methods">
+                            <div class="payment-method selected" data-method="card">
+                                <i class="fas fa-credit-card"></i>
+                                <div>Credit/Debit Card</div>
+                            </div>
+                            
+                            <div class="payment-method" data-method="paypal">
+                                <i class="fab fa-paypal"></i>
+                                <div>PayPal</div>
+                            </div>
+                            
+                            <div class="payment-method" data-method="wallet">
+                                <i class="fas fa-wallet"></i>
+                                <div>Digital Wallet</div>
+                            </div>
+                            
+                            <div class="payment-method" data-method="bank">
+                                <i class="fas fa-university"></i>
+                                <div>Bank Transfer</div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-form" id="cardForm">
+                            <h4>Card Details</h4>
+                            
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+                            </div>
+                            
+                            <div class="card-row">
+                                <div class="form-group">
+                                    <label for="cardName">Cardholder Name</label>
+                                    <input type="text" id="cardName" class="form-control" placeholder="John Doe">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cardExpiry">Expiry Date</label>
+                                    <input type="text" id="cardExpiry" class="form-control" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cardCVC">CVC</label>
+                                    <input type="text" id="cardCVC" class="form-control" placeholder="123" maxlength="3">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-form" id="paypalForm" style="display: none;">
+                            <h4>PayPal Account</h4>
+                            
+                            <div class="form-group">
+                                <label for="paypalEmail">PayPal Email</label>
+                                <input type="email" id="paypalEmail" class="form-control" placeholder="your@email.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="paypalPassword">PayPal Password</label>
+                                <input type="password" id="paypalPassword" class="form-control" placeholder="Your PayPal password">
+                            </div>
+                        </div>
+                        
+                        <div class="payment-form" id="walletForm" style="display: none;">
+                            <h4>Digital Wallet</h4>
+                            
+                            <div class="form-group">
+                                <label for="walletNumber">Wallet Number</label>
+                                <input type="text" id="walletNumber" class="form-control" placeholder="Your wallet number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="walletPin">Wallet PIN</label>
+                                <input type="password" id="walletPin" class="form-control" placeholder="Your wallet PIN">
+                            </div>
+                        </div>
+                        
+                        <div class="payment-form" id="bankForm" style="display: none;">
+                            <h4>Bank Transfer</h4>
+                            
+                            <div class="form-group">
+                                <label for="bankAccount">Bank Account Number</label>
+                                <input type="text" id="bankAccount" class="form-control" placeholder="Your bank account number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bankRouting">Routing Number</label>
+                                <input type="text" id="bankRouting" class="form-control" placeholder="Your routing number">
+                            </div>
+                        </div>
+                        
+                        <div class="order-summary">
+                            <h4>Order Summary</h4>
+                            
+                            <div class="order-item">
+                                <span>Hotel Booking</span>
+                                <span id="hotelPrice">₹0</span>
+                            </div>
+                            
+                            <div class="order-item">
+                                <span>Bus Ticket</span>
+                                <span id="busTicketPrice">₹0</span>
+                            </div>
+                            
+                            <div class="order-total">
+                                <span>Total</span>
+                                <span id="totalAmount">₹0.00</span>
+                            </div>
+                            
+                            <div class="promo-code">
+                                <input type="text" class="form-control" placeholder="Promo Code">
+                                <button type="button" class="btn">Apply</button>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="payment-button" id="processPayment">Process Payment</button>
+                        
+                        <div class="security-info">
+                            <i class="fas fa-lock"></i> Your payment information is secure and encrypted
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 9: Booking Confirmation -->
+                <div class="form-step" data-step="9">
+                    <h3>Booking Confirmation</h3>
+                    <p>Your booking has been confirmed! Here are your booking details.</p>
+                    
+                    <div class="success-message">
+                        <i class="fas fa-check-circle"></i> Your booking has been confirmed successfully!
+                    </div>
+                    
+                    <div class="form-group">
+                        <h4>Booking Details</h4>
+                        <div class="itinerary-item">
+                            <h4>Hotel Reservation</h4>
+                            <p id="hotelBookingDetails">Grand City Hotel - 3 nights</p>
+                            <div class="itinerary-details">
+                                <span id="hotelBookingConfirmation">Confirmation: HTL-789456</span>
+                                <span>Status: Confirmed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="itinerary-item">
+                            <h4>Bus Reservation</h4>
+                            <p id="busBookingDetails">Express Comfort - Selected Seats</p>
+                            <div class="itinerary-details">
+                                <span id="busBookingConfirmation">Confirmation: BUS-789456</span>
+                                <span>Status: Confirmed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="itinerary-item">
+                            <h4>Payment Details</h4>
+                            <p id="paymentDetails">Payment completed using Credit Card</p>
+                            <div class="itinerary-details">
+                                <span id="paymentConfirmation">Transaction ID: TXN-123789</span>
+                                <span id="paymentDate">Date: Today</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h4>Rate Your Experience</h4>
+                        <p>Help other travelers by sharing your experience</p>
+                        
+                        <div class="form-group">
+                            <label>Overall Booking Experience</label>
+                            <div class="rating-stars" id="overallRating">
+                                <i class="fas fa-star" data-rating="1"></i>
+                                <i class="fas fa-star" data-rating="2"></i>
+                                <i class="fas fa-star" data-rating="3"></i>
+                                <i class="fas fa-star" data-rating="4"></i>
+                                <i class="fas fa-star" data-rating="5"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="review">Write a Review</label>
+                            <textarea id="review" class="form-control" rows="4" placeholder="Share your experience with other travelers..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="button" class="btn" id="submitReview">Submit Review</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="button" class="btn" id="downloadTicket">Download E-Ticket</button>
+                        <button type="button" class="btn" id="shareBooking">Share Booking</button>
+                    </div>
+                </div>
+
+                <!-- Form Navigation -->
+                <div class="form-navigation">
+                    <button type="button" class="btn" id="prevBtn" style="display: none;">Previous</button>
+                    <button type="button" class="btn" id="nextBtn">Next</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>SmartTour</h3>
+                    <p>All-in-One Travel & Tourism Platform for Easy, Safe & Affordable Travel</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Destinations</a></li>
+                        <li><a href="#">My Trips</a></li>
+                        <li><a href="#">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 SmartTour. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Login to Your Account</h3>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn">Login</button>
+                </div>
+                
+                <div class="form-group">
+                    <p>Don't have an account? <a href="#" id="modalSignupLink">Sign up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- API Status Indicator -->
+    <div class="api-status disconnected" id="apiStatus">
+        <i class="fas fa-wifi"></i>
+        <span id="apiStatusText">Disconnected from API</span>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:3000/api'; // Change this to your Node.js server URL
+        
+        // Check API connection
+        async function checkApiConnection() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/status`);
+                if (response.ok) {
+                    updateApiStatus(true, 'Connected to API');
+                    return true;
+                }
+            } catch (error) {
+                console.error('API connection error:', error);
+            }
+            
+            updateApiStatus(false, 'Disconnected from API');
+            return false;
+        }
+        
+        // Update API status indicator
+        function updateApiStatus(connected, message) {
+            const statusElement = document.getElementById('apiStatus');
+            const statusTextElement = document.getElementById('apiStatusText');
+            
+            if (connected) {
+                statusElement.classList.remove('disconnected');
+                statusElement.classList.add('connected');
+            } else {
+                statusElement.classList.remove('connected');
+                statusElement.classList.add('disconnected');
+            }
+            
+            statusTextElement.textContent = message;
+        }
+        
+        // Form Step Navigation
+        const formSteps = document.querySelectorAll('.form-step');
+        const stepIndicators = document.querySelectorAll('.step');
+        const progressBar = document.getElementById('progressBar');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        let currentStep = 1;
+        let selectedBus = null;
+        let selectedSeats = [];
+        let seatPrice = 0;
+        let selectedHotel = null;
+        let hotelPrice = 0;
+        let numberOfNights = 0;
+        let selectedPreferences = [];
+        
+        // Update form step
+        function updateFormStep() {
+            // Hide all form steps
+            formSteps.forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // Show current form step
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+            
+            // Update step indicators
+            stepIndicators.forEach((indicator, index) => {
+                if (index + 1 < currentStep) {
+                    indicator.classList.add('completed');
+                    indicator.classList.remove('active');
+                } else if (index + 1 === currentStep) {
+                    indicator.classList.add('active');
+                    indicator.classList.remove('completed');
+                } else {
+                    indicator.classList.remove('active', 'completed');
+                }
+            });
+            
+            // Update progress bar
+            const progress = (currentStep / formSteps.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            // Update navigation buttons
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
+            nextBtn.textContent = currentStep === formSteps.length ? 'Finish' : 'Next';
+            
+            // Load data when reaching specific steps
+            if (currentStep === 4) {
+                loadPreferences();
+            } else if (currentStep === 5) {
+                // Only generate itinerary if preferences are selected
+                if (selectedPreferences.length > 0) {
+                    generateItinerary();
+                } else {
+                    // Show message to select preferences first
+                    const itineraryContainer = document.getElementById('itineraryContainer');
+                    itineraryContainer.innerHTML = '<p style="text-align: center; padding: 20px;">Please select your preferences in the previous step to generate your itinerary.</p>';
+                }
+            } else if (currentStep === 6) {
+                loadHotels();
+            } else if (currentStep === 7) {
+                loadBuses();
+            }
+        }
+        
+        // Next button click
+        nextBtn.addEventListener('click', () => {
+            if (validateCurrentStep()) {
+                if (currentStep < formSteps.length) {
+                    currentStep++;
+                    updateFormStep();
+                    
+                    // Initialize seat grid when reaching step 7
+                    if (currentStep === 7) {
+                        initializeSeatGrid();
+                    }
+                    
+                    // Update payment summary when reaching step 8
+                    if (currentStep === 8) {
+                        updatePaymentSummary();
+                    }
+                } else {
+                    // Submit form
+                    document.getElementById('travelForm').submit();
+                }
+            }
+        });
+        
+        // Previous button click
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateFormStep();
+            }
+        });
+        
+        // Validate current step
+        function validateCurrentStep() {
+            const currentStepElement = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.nextElementSibling.style.display = 'block';
+                    isValid = false;
+                } else {
+                    field.nextElementSibling.style.display = 'none';
+                }
+            });
+            
+            // Special validation for step 2 (source and destination)
+            if (currentStep === 2) {
+                const source = document.getElementById('source').value;
+                const destination = document.getElementById('destination').value;
+                
+                if (!source.trim()) {
+                    document.getElementById('source').nextElementSibling.style.display = 'block';
+                    isValid = false;
+                }
+                
+                if (!destination.trim()) {
+                    document.getElementById('destination').nextElementSibling.style.display = 'block';
+                    isValid = false;
+                }
+            }
+            
+            // Special validation for step 3 (traveler type)
+            if (currentStep === 3) {
+                const travelerType = currentStepElement.querySelector('input[name="travelerType"]:checked');
+                if (!travelerType) {
+                    currentStepElement.querySelector('.error-message').style.display = 'block';
+                    isValid = false;
+                } else {
+                    currentStepElement.querySelector('.error-message').style.display = 'none';
+                }
+            }
+            
+            // Special validation for step 4 (preferences)
+            if (currentStep === 4) {
+                const preferences = currentStepElement.querySelectorAll('input[name="preferences"]:checked');
+                if (preferences.length === 0) {
+                    currentStepElement.querySelector('.error-message').style.display = 'block';
+                    isValid = false;
+                } else {
+                    currentStepElement.querySelector('.error-message').style.display = 'none';
+                    
+                    // Store selected preferences
+                    selectedPreferences = Array.from(preferences).map(cb => cb.value);
+                }
+            }
+            
+            // Special validation for step 5 (itinerary)
+            if (currentStep === 5) {
+                if (selectedPreferences.length === 0) {
+                    alert('Please select your preferences first to generate the itinerary.');
+                    isValid = false;
+                }
+            }
+            
+            // Special validation for step 6 (hotel selection)
+            if (currentStep === 6) {
+                if (!selectedHotel) {
+                    alert('Please select a hotel');
+                    isValid = false;
+                }
+            }
+            
+            // Special validation for step 7 (bus and seat selection)
+            if (currentStep === 7) {
+                if (!selectedBus || selectedSeats.length === 0) {
+                    alert('Please select a bus and at least one seat');
+                    isValid = false;
+                }
+            }
+            
+            // Special validation for step 8 (payment)
+            if (currentStep === 8) {
+                const selectedPaymentMethod = document.querySelector('.payment-method.selected');
+                const paymentForm = document.getElementById(`${selectedPaymentMethod.dataset.method}Form`);
+                const paymentFields = paymentForm.querySelectorAll('.form-control');
+                
+                for (const field of paymentFields) {
+                    if (!field.value.trim()) {
+                        alert('Please fill in all payment details');
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            
+            return isValid;
+        }
+        
+        // Preference card selection
+        document.querySelectorAll('.preference-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                if (input.type === 'radio') {
+                    // For radio buttons, deselect all others in the group
+                    document.querySelectorAll(`input[name="${input.name}"]`).forEach(radio => {
+                        radio.parentElement.querySelector('.preference-card').classList.remove('selected');
+                    });
+                }
+                
+                // Toggle selection
+                this.classList.toggle('selected');
+                
+                // For radio buttons, ensure input is checked
+                if (input.type === 'radio') {
+                    input.checked = true;
+                } else {
+                    // For checkboxes, toggle checked state
+                    input.checked = !input.checked;
+                }
+            });
+        });
+        
+        // Load preferences based on source and destination
+        async function loadPreferences() {
+            const container = document.getElementById('preferencesContainer');
+            container.innerHTML = '<div class="spinner"></div>';
+            
+            const source = document.getElementById('source').value;
+            const destination = document.getElementById('destination').value;
+            
+            try {
+                const isConnected = await checkApiConnection();
+                
+                if (isConnected) {
+                    // Fetch preferences from API
+                    const response = await fetch(`${API_BASE_URL}/preferences?source=${encodeURIComponent(source)}&destination=${encodeURIComponent(destination)}`);
+                    const preferences = await response.json();
+                    
+                    // Clear spinner
+                    container.innerHTML = '';
+                    
+                    // Display preferences
+                    preferences.forEach(preference => {
+                        const preferenceElement = createPreferenceElement(preference);
+                        container.appendChild(preferenceElement);
+                    });
+                } else {
+                    // Use mock data
+                    container.innerHTML = '';
+                    const mockPreferences = getMockPreferences(source, destination);
+                    
+                    mockPreferences.forEach(preference => {
+                        const preferenceElement = createPreferenceElement(preference);
+                        container.appendChild(preferenceElement);
+                    });
+                }
+                
+                // Re-attach events for preference cards
+                attachPreferenceCardEvents();
+            } catch (error) {
+                console.error('Error loading preferences:', error);
+                
+                // Fallback to mock data
+                container.innerHTML = '';
+                const mockPreferences = getMockPreferences(source, destination);
+                
+                mockPreferences.forEach(preference => {
+                    const preferenceElement = createPreferenceElement(preference);
+                    container.appendChild(preferenceElement);
+                });
+                
+                attachPreferenceCardEvents();
+            }
+        }
+        
+        // Create preference element
+        function createPreferenceElement(preference) {
+            const div = document.createElement('div');
+            div.className = 'checkbox-item';
+            
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.id = `preference-${preference.id}`;
+            input.name = 'preferences';
+            input.value = preference.value;
+            
+            const label = document.createElement('label');
+            label.htmlFor = `preference-${preference.id}`;
+            
+            const card = document.createElement('div');
+            card.className = 'preference-card';
+            
+            const title = document.createElement('h4');
+            title.innerHTML = `<i class="${preference.icon}"></i> ${preference.title}`;
+            
+            const description = document.createElement('p');
+            description.textContent = preference.description;
+            
+            card.appendChild(title);
+            card.appendChild(description);
+            label.appendChild(card);
+            
+            div.appendChild(input);
+            div.appendChild(label);
+            
+            return div;
+        }
+        
+        // Attach preference card events
+        function attachPreferenceCardEvents() {
+            document.querySelectorAll('#preferencesContainer .preference-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    
+                    // Toggle selection
+                    this.classList.toggle('selected');
+                    
+                    // For checkboxes, toggle checked state
+                    input.checked = !input.checked;
+                });
+            });
+        }
+        
+        // Get mock preferences based on source and destination
+        function getMockPreferences(source, destination) {
+            // Base preferences
+            const basePreferences = [
+                {
+                    id: 1,
+                    value: 'culture',
+                    title: 'Cultural Sites',
+                    description: 'Museums, historical landmarks, and cultural experiences',
+                    icon: 'fas fa-landmark'
+                },
+                {
+                    id: 2,
+                    value: 'outdoor',
+                    title: 'Outdoor Activities',
+                    description: 'Hiking, adventure sports, and nature experiences',
+                    icon: 'fas fa-mountain'
+                },
+                {
+                    id: 3,
+                    value: 'culinary',
+                    title: 'Culinary Experiences',
+                    description: 'Food tours, cooking classes, and local cuisine',
+                    icon: 'fas fa-utensils'
+                },
+                {
+                    id: 4,
+                    value: 'relaxation',
+                    title: 'Relaxation',
+                    description: 'Spas, beaches, and wellness activities',
+                    icon: 'fas fa-spa'
+                },
+                {
+                    id: 5,
+                    value: 'shopping',
+                    title: 'Shopping',
+                    description: 'Local markets, malls, and unique souvenirs',
+                    icon: 'fas fa-shopping-bag'
+                },
+                {
+                    id: 6,
+                    value: 'nightlife',
+                    title: 'Nightlife',
+                    description: 'Bars, clubs, and evening entertainment',
+                    icon: 'fas fa-cocktail'
+                }
+            ];
+            
+            // Add destination-specific preferences
+            if (destination.toLowerCase().includes('beach') || destination.toLowerCase().includes('coast') || destination.toLowerCase().includes('goa')) {
+                basePreferences.push({
+                    id: 7,
+                    value: 'water-sports',
+                    title: 'Water Sports',
+                    description: 'Snorkeling, diving, surfing, and other water activities',
+                    icon: 'fas fa-swimmer'
+                });
+                
+                basePreferences.push({
+                    id: 8,
+                    value: 'beach-activities',
+                    title: 'Beach Activities',
+                    description: 'Sunbathing, beach volleyball, and beach parties',
+                    icon: 'fas fa-umbrella-beach'
+                });
+            }
+            
+            if (destination.toLowerCase().includes('mountain') || destination.toLowerCase().includes('hill') || destination.toLowerCase().includes('shimla') || destination.toLowerCase().includes('manali')) {
+                basePreferences.push({
+                    id: 9,
+                    value: 'trekking',
+                    title: 'Trekking',
+                    description: 'Mountain trails, hiking expeditions, and nature walks',
+                    icon: 'fas fa-hiking'
+                });
+                
+                basePreferences.push({
+                    id: 10,
+                    value: 'adventure-sports',
+                    title: 'Adventure Sports',
+                    description: 'Paragliding, rafting, and mountain climbing',
+                    icon: 'fas fa-parachute-box'
+                });
+            }
+            
+            if (destination.toLowerCase().includes('city') || destination.toLowerCase().includes('urban') || destination.toLowerCase().includes('mumbai') || destination.toLowerCase().includes('delhi') || destination.toLowerCase().includes('bangalore')) {
+                basePreferences.push({
+                    id: 11,
+                    value: 'urban-exploration',
+                    title: 'Urban Exploration',
+                    description: 'City tours, architecture, and urban experiences',
+                    icon: 'fas fa-city'
+                });
+                
+                basePreferences.push({
+                    id: 12,
+                    value: 'food-tours',
+                    title: 'Food Tours',
+                    description: 'Street food, local restaurants, and culinary tours',
+                    icon: 'fas fa-utensils'
+                });
+            }
+            
+            // Add source-specific preferences
+            if (source.toLowerCase().includes('cold') || source.toLowerCase().includes('snow') || source.toLowerCase().includes('kashmir') || source.toLowerCase().includes('shimla')) {
+                basePreferences.push({
+                    id: 13,
+                    value: 'warm-activities',
+                    title: 'Warm Weather Activities',
+                    description: 'Beaches, sunbathing, and tropical experiences',
+                    icon: 'fas fa-sun'
+                });
+            }
+            
+            // Add budget-friendly preferences
+            basePreferences.push({
+                id: 14,
+                value: 'budget-friendly',
+                title: 'Budget-Friendly Options',
+                description: 'Affordable accommodations, food, and activities',
+                icon: 'fas fa-tag'
+            });
+            
+            basePreferences.push({
+                id: 15,
+                value: 'local-experiences',
+                title: 'Local Experiences',
+                description: 'Authentic local culture, traditions, and lifestyle',
+                icon: 'fas fa-users'
+            });
+            
+            return basePreferences;
+        }
+        
+        // Generate itinerary based on selected preferences
+        function generateItinerary() {
+            const itineraryContainer = document.getElementById('itineraryContainer');
+            const spinner = document.getElementById('itinerarySpinner');
+            const successMessage = document.getElementById('itinerarySuccessMessage');
+            
+            // Show spinner
+            spinner.style.display = 'block';
+            itineraryContainer.innerHTML = '';
+            
+            // Get form data
+            const destination = document.getElementById('destination').value;
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+            const timeDiff = endDate.getTime() - startDate.getTime();
+            const numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Hide spinner
+                spinner.style.display = 'none';
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                
+                // Generate itinerary based on preferences
+                const itineraryItems = [];
+                
+                // Day 1: Arrival
+                itineraryItems.push({
+                    title: 'Day 1: Arrival and Check-in',
+                    description: `Arrive at ${destination} and check into your hotel. Spend the rest of the day exploring the nearby area.`,
+                    details: [
+                        { icon: 'fas fa-plane', text: 'Arrival at destination' },
+                        { icon: 'fas fa-bed', text: 'Hotel Check-in' }
+                    ]
+                });
+                
+                // Add preference-based activities
+                if (selectedPreferences.includes('culture')) {
+                    itineraryItems.push({
+                        title: 'Day 2: Cultural Exploration',
+                        description: `Explore the rich cultural heritage of ${destination} with visits to historical landmarks and museums.`,
+                        details: [
+                            { icon: 'fas fa-landmark', text: 'Historical Landmarks Tour' },
+                            { icon: 'fas fa-museum', text: 'Museum Visit' }
+                        ]
+                    });
+                }
+                
+                if (selectedPreferences.includes('outdoor') || selectedPreferences.includes('trekking')) {
+                    itineraryItems.push({
+                        title: 'Day 3: Outdoor Adventure',
+                        description: `Experience the natural beauty around ${destination} with outdoor activities and nature exploration.`,
+                        details: [
+                            { icon: 'fas fa-hiking', text: 'Nature Trail Hiking' },
+                            { icon: 'fas fa-tree', text: 'Nature Exploration' }
+                        ]
+                    });
+                }
+                
+                if (selectedPreferences.includes('culinary') || selectedPreferences.includes('food-tours')) {
+                    itineraryItems.push({
+                        title: 'Day 4: Culinary Experience',
+                        description: `Discover the local cuisine of ${destination} with food tours and cooking classes.`,
+                        details: [
+                            { icon: 'fas fa-utensils', text: 'Cooking Class' },
+                            { icon: 'fas fa-utensils', text: 'Food Tour' }
+                        ]
+                    });
+                }
+                
+                if (selectedPreferences.includes('water-sports') || selectedPreferences.includes('beach-activities')) {
+                    itineraryItems.push({
+                        title: 'Day 5: Water Activities',
+                        description: `Enjoy water sports and beach activities at the beautiful locations in ${destination}.`,
+                        details: [
+                            { icon: 'fas fa-swimmer', text: 'Water Sports' },
+                            { icon: 'fas fa-umbrella-beach', text: 'Beach Relaxation' }
+                        ]
+                    });
+                }
+                
+                if (selectedPreferences.includes('shopping')) {
+                    itineraryItems.push({
+                        title: 'Day 6: Shopping Experience',
+                        description: `Explore the local markets and shopping districts in ${destination} for unique souvenirs.`,
+                        details: [
+                            { icon: 'fas fa-shopping-bag', text: 'Local Market Visit' },
+                            { icon: 'fas fa-store', text: 'Shopping District' }
+                        ]
+                    });
+                }
+                
+                if (selectedPreferences.includes('relaxation')) {
+                    itineraryItems.push({
+                        title: 'Day 7: Relaxation Day',
+                        description: `Take a day to relax and rejuvenate at spas or peaceful locations in ${destination}.`,
+                        details: [
+                            { icon: 'fas fa-spa', text: 'Spa Treatment' },
+                            { icon: 'fas fa-leaf', text: 'Relaxation Time' }
+                        ]
+                    });
+                }
+                
+                if (selectedPreferences.includes('nightlife')) {
+                    itineraryItems.push({
+                        title: 'Day 8: Nightlife Experience',
+                        description: `Experience the vibrant nightlife of ${destination} with visits to popular bars and clubs.`,
+                        details: [
+                            { icon: 'fas fa-cocktail', text: 'Bar Hopping' },
+                            { icon: 'fas fa-music', text: 'Nightclub Visit' }
+                        ]
+                    });
+                }
+                
+                if (selectedPreferences.includes('budget-friendly')) {
+                    itineraryItems.push({
+                        title: 'Budget-Friendly Day',
+                        description: `Explore ${destination} without breaking the bank with free attractions and affordable dining options.`,
+                        details: [
+                            { icon: 'fas fa-walking', text: 'Free Walking Tour' },
+                            { icon: 'fas fa-rupee-sign', text: 'Budget Dining' }
+                        ]
+                    });
+                }
+                
+                if (selectedPreferences.includes('local-experiences')) {
+                    itineraryItems.push({
+                        title: 'Local Immersion Day',
+                        description: `Immerse yourself in the local culture of ${destination} with authentic experiences.`,
+                        details: [
+                            { icon: 'fas fa-users', text: 'Local Community Visit' },
+                            { icon: 'fas fa-home', text: 'Homestay Experience' }
+                        ]
+                    });
+                }
+                
+                // Last day: Departure
+                itineraryItems.push({
+                    title: `Day ${numberOfDays}: Departure`,
+                    description: `Enjoy a final breakfast in ${destination} before checking out and heading to the airport.`,
+                    details: [
+                        { icon: 'fas fa-coffee', text: 'Breakfast' },
+                        { icon: 'fas fa-suitcase', text: 'Check-out and Departure' }
+                    ]
+                });
+                
+                // Display itinerary items
+                itineraryContainer.innerHTML = '';
+                itineraryItems.forEach(item => {
+                    const itineraryItem = document.createElement('div');
+                    itineraryItem.className = 'itinerary-item';
+                    
+                    const title = document.createElement('h4');
+                    title.textContent = item.title;
+                    
+                    const description = document.createElement('p');
+                    description.textContent = item.description;
+                    
+                    const details = document.createElement('div');
+                    details.className = 'itinerary-details';
+                    
+                    item.details.forEach(detail => {
+                        const detailItem = document.createElement('span');
+                        detailItem.innerHTML = `<i class="${detail.icon}"></i> ${detail.text}`;
+                        details.appendChild(detailItem);
+                    });
+                    
+                    itineraryItem.appendChild(title);
+                    itineraryItem.appendChild(description);
+                    itineraryItem.appendChild(details);
+                    
+                    itineraryContainer.appendChild(itineraryItem);
+                });
+            }, 1500);
+        }
+        
+        // Load hotels from API
+        async function loadHotels() {
+            const hotelOptionsContainer = document.getElementById('hotelOptions');
+            
+            try {
+                // Check if we're connected to API
+                const isConnected = await checkApiConnection();
+                
+                if (isConnected) {
+                    // Fetch hotels from API
+                    const response = await fetch(`${API_BASE_URL}/hotels`);
+                    const hotels = await response.json();
+                    
+                    // Clear loading spinner
+                    hotelOptionsContainer.innerHTML = '';
+                    
+                    // Sort hotels by price (ascending)
+                    hotels.sort((a, b) => a.price - b.price);
+                    
+                    // Display hotels
+                    hotels.forEach(hotel => {
+                        const hotelCard = createHotelCard(hotel);
+                        hotelOptionsContainer.appendChild(hotelCard);
+                    });
+                    
+                    // Load nearby places for the first hotel
+                    if (hotels.length > 0) {
+                        loadNearbyPlaces(hotels[0].id);
+                    }
+                } else {
+                    // Use mock data if API is not available
+                    hotelOptionsContainer.innerHTML = '';
+                    const mockHotels = getMockHotels();
+                    
+                    // Sort hotels by price (ascending)
+                    mockHotels.sort((a, b) => a.price - b.price);
+                    
+                    mockHotels.forEach(hotel => {
+                        const hotelCard = createHotelCard(hotel);
+                        hotelOptionsContainer.appendChild(hotelCard);
+                    });
+                    
+                    // Load mock nearby places
+                    loadMockNearbyPlaces();
+                }
+            } catch (error) {
+                console.error('Error loading hotels:', error);
+                
+                // Fallback to mock data
+                hotelOptionsContainer.innerHTML = '';
+                const mockHotels = getMockHotels();
+                
+                // Sort hotels by price (ascending)
+                mockHotels.sort((a, b) => a.price - b.price);
+                
+                mockHotels.forEach(hotel => {
+                    const hotelCard = createHotelCard(hotel);
+                    hotelOptionsContainer.appendChild(hotelCard);
+                });
+                
+                // Load mock nearby places
+                loadMockNearbyPlaces();
+            }
+        }
+        
+        // Create hotel card element
+        function createHotelCard(hotel) {
+            const card = document.createElement('div');
+            card.className = 'hotel-card';
+            
+            // Add budget-friendly class if price is low
+            if (hotel.price <= 3000) {
+                card.classList.add('budget-friendly');
+            }
+            
+            card.dataset.hotelId = hotel.id;
+            
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'hotel-image';
+            
+            if (hotel.image) {
+                const img = document.createElement('img');
+                img.src = hotel.image;
+                img.alt = hotel.name;
+                imageDiv.appendChild(img);
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'hotel-image-placeholder';
+                placeholder.innerHTML = '<i class="fas fa-hotel"></i>';
+                imageDiv.appendChild(placeholder);
+            }
+            
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'hotel-info';
+            
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'hotel-name';
+            
+            // Add budget badge if applicable
+            if (hotel.price <= 3000) {
+                nameDiv.innerHTML = `${hotel.name} <span class="budget-badge">Budget</span>`;
+            } else {
+                nameDiv.textContent = hotel.name;
+            }
+            
+            const typeDiv = document.createElement('div');
+            typeDiv.className = 'hotel-type';
+            typeDiv.innerHTML = `<i class="fas fa-star"></i> ${hotel.type}`;
+            
+            const ratingDiv = document.createElement('div');
+            ratingDiv.className = 'hotel-rating';
+            
+            // Create star rating
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('i');
+                star.className = i <= Math.floor(hotel.rating) ? 'fas fa-star' : (i - 0.5 <= hotel.rating ? 'fas fa-star-half-alt' : 'far fa-star');
+                ratingDiv.appendChild(star);
+            }
+            
+            const ratingSpan = document.createElement('span');
+            ratingSpan.textContent = hotel.rating;
+            ratingDiv.appendChild(ratingSpan);
+            
+            const featuresDiv = document.createElement('div');
+            featuresDiv.className = 'hotel-features';
+            
+            hotel.features.forEach(feature => {
+                const featureDiv = document.createElement('div');
+                featureDiv.className = 'hotel-feature';
+                featureDiv.innerHTML = `<i class="fas fa-check"></i> ${feature}`;
+                featuresDiv.appendChild(featureDiv);
+            });
+            
+            const priceDiv = document.createElement('div');
+            priceDiv.className = 'hotel-price';
+            priceDiv.innerHTML = `₹${hotel.price} <span>per night</span>`;
+            
+            infoDiv.appendChild(nameDiv);
+            infoDiv.appendChild(typeDiv);
+            infoDiv.appendChild(ratingDiv);
+            infoDiv.appendChild(featuresDiv);
+            infoDiv.appendChild(priceDiv);
+            
+            card.appendChild(imageDiv);
+            card.appendChild(infoDiv);
+            
+            // Add click event
+            card.addEventListener('click', function() {
+                // Remove selected class from all hotel cards
+                document.querySelectorAll('.hotel-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked card
+                this.classList.add('selected');
+                
+                // Update selected hotel
+                selectedHotel = {
+                    id: hotel.id,
+                    name: hotel.name,
+                    price: hotel.price
+                };
+                
+                // Calculate number of nights
+                const startDate = new Date(document.getElementById('startDate').value);
+                const endDate = new Date(document.getElementById('endDate').value);
+                const timeDiff = endDate.getTime() - startDate.getTime();
+                numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                
+                // Update hotel price
+                hotelPrice = hotel.price * numberOfNights;
+                
+                // Load nearby places for this hotel
+                if (isConnected) {
+                    loadNearbyPlaces(hotel.id);
+                } else {
+                    loadMockNearbyPlaces();
+                }
+            });
+            
+            return card;
+        }
+        
+        // Load nearby places from API
+        async function loadNearbyPlaces(hotelId) {
+            const placesGrid = document.getElementById('placesGrid');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/hotels/${hotelId}/nearby-places`);
+                const places = await response.json();
+                
+                // Clear loading spinner
+                placesGrid.innerHTML = '';
+                
+                // Display places
+                places.forEach(place => {
+                    const placeCard = createPlaceCard(place);
+                    placesGrid.appendChild(placeCard);
+                });
+            } catch (error) {
+                console.error('Error loading nearby places:', error);
+                
+                // Fallback to mock data
+                loadMockNearbyPlaces();
+            }
+        }
+        
+        // Load mock nearby places
+        function loadMockNearbyPlaces() {
+            const placesGrid = document.getElementById('placesGrid');
+            placesGrid.innerHTML = '';
+            
+            const mockPlaces = getMockNearbyPlaces();
+            
+            mockPlaces.forEach(place => {
+                const placeCard = createPlaceCard(place);
+                placesGrid.appendChild(placeCard);
+            });
+        }
+        
+        // Create place card element
+        function createPlaceCard(place) {
+            const card = document.createElement('div');
+            card.className = 'place-card';
+            
+            const iconDiv = document.createElement('div');
+            iconDiv.className = 'place-icon';
+            
+            const icon = document.createElement('i');
+            icon.className = place.icon || 'fas fa-map-marker-alt';
+            iconDiv.appendChild(icon);
+            
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'place-name';
+            nameDiv.textContent = place.name;
+            
+            const distanceDiv = document.createElement('div');
+            distanceDiv.className = 'place-distance';
+            distanceDiv.textContent = place.distance;
+            
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'place-category';
+            categoryDiv.textContent = place.category;
+            
+            card.appendChild(iconDiv);
+            card.appendChild(nameDiv);
+            card.appendChild(distanceDiv);
+            card.appendChild(categoryDiv);
+            
+            return card;
+        }
+        
+        // Load buses from API
+        async function loadBuses() {
+            const busOptionsContainer = document.getElementById('busOptions');
+            
+            try {
+                // Check if we're connected to API
+                const isConnected = await checkApiConnection();
+                
+                if (isConnected) {
+                    // Fetch buses from API
+                    const response = await fetch(`${API_BASE_URL}/buses`);
+                    const buses = await response.json();
+                    
+                    // Clear loading spinner
+                    busOptionsContainer.innerHTML = '';
+                    
+                    // Sort buses by price (ascending)
+                    buses.sort((a, b) => a.price - b.price);
+                    
+                    // Display buses
+                    buses.forEach(bus => {
+                        const busCard = createBusCard(bus);
+                        busOptionsContainer.appendChild(busCard);
+                    });
+                } else {
+                    // Use mock data if API is not available
+                    busOptionsContainer.innerHTML = '';
+                    const mockBuses = getMockBuses();
+                    
+                    // Sort buses by price (ascending)
+                    mockBuses.sort((a, b) => a.price - b.price);
+                    
+                    mockBuses.forEach(bus => {
+                        const busCard = createBusCard(bus);
+                        busOptionsContainer.appendChild(busCard);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading buses:', error);
+                
+                // Fallback to mock data
+                busOptionsContainer.innerHTML = '';
+                const mockBuses = getMockBuses();
+                
+                // Sort buses by price (ascending)
+                mockBuses.sort((a, b) => a.price - b.price);
+                
+                mockBuses.forEach(bus => {
+                    const busCard = createBusCard(bus);
+                    busOptionsContainer.appendChild(busCard);
+                });
+            }
+        }
+        
+        // Create bus card element
+        function createBusCard(bus) {
+            const card = document.createElement('div');
+            card.className = 'bus-card';
+            
+            // Add budget-friendly class if price is low
+            if (bus.price <= 800) {
+                card.classList.add('budget-friendly');
+            }
+            
+            card.dataset.busId = bus.id;
+            
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'bus-header';
+            
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'bus-name';
+            
+            // Add budget badge if applicable
+            if (bus.price <= 800) {
+                nameDiv.innerHTML = `${bus.name} <span class="budget-badge">Budget</span>`;
+            } else {
+                nameDiv.textContent = bus.name;
+            }
+            
+            const priceDiv = document.createElement('div');
+            priceDiv.className = 'bus-price';
+            priceDiv.textContent = `₹${bus.price}`;
+            
+            headerDiv.appendChild(nameDiv);
+            headerDiv.appendChild(priceDiv);
+            
+            const timingDiv = document.createElement('div');
+            timingDiv.className = 'bus-timing';
+            timingDiv.innerHTML = `<i class="fas fa-clock"></i> Departs: ${bus.departureTime}`;
+            
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'bus-details';
+            detailsDiv.innerHTML = `
+                <span>Duration: ${bus.duration}</span>
+                <span>Arrival: ${bus.arrivalTime}</span>
+            `;
+            
+            const featuresDiv = document.createElement('div');
+            featuresDiv.className = 'bus-features';
+            
+            bus.features.forEach(feature => {
+                const featureDiv = document.createElement('div');
+                featureDiv.className = 'bus-feature';
+                featureDiv.innerHTML = `<i class="fas fa-check"></i> ${feature}`;
+                featuresDiv.appendChild(featureDiv);
+            });
+            
+            card.appendChild(headerDiv);
+            card.appendChild(timingDiv);
+            card.appendChild(detailsDiv);
+            card.appendChild(featuresDiv);
+            
+            // Add click event
+            card.addEventListener('click', function() {
+                // Remove selected class from all bus cards
+                document.querySelectorAll('.bus-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked card
+                this.classList.add('selected');
+                
+                // Update selected bus
+                selectedBus = {
+                    id: bus.id,
+                    name: bus.name,
+                    price: bus.price,
+                    departureTime: bus.departureTime,
+                    arrivalTime: bus.arrivalTime
+                };
+                
+                // Update seat price
+                seatPrice = bus.price;
+                
+                // Reset selected seats
+                selectedSeats = [];
+                updateSelectedSeats();
+            });
+            
+            return card;
+        }
+        
+        // Initialize seat grid
+        function initializeSeatGrid() {
+            const seatGrid = document.getElementById('seatGrid');
+            seatGrid.innerHTML = '';
+            
+            // Generate 32 seats (8 rows x 4 columns)
+            for (let row = 1; row <= 8; row++) {
+                for (let col = 1; col <= 4; col++) {
+                    const seatNumber = `${row}${String.fromCharCode(64 + col)}`; // 1A, 1B, 1C, 1D, etc.
+                    const seat = document.createElement('div');
+                    seat.className = 'seat';
+                    seat.textContent = seatNumber;
+                    seat.dataset.seatNumber = seatNumber;
+                    
+                    // Randomly mark some seats as occupied (for demo purposes)
+                    if (Math.random() < 0.3) {
+                        seat.classList.add('occupied');
+                    } else {
+                        seat.addEventListener('click', toggleSeatSelection);
+                    }
+                    
+                    seatGrid.appendChild(seat);
+                }
+            }
+        }
+        
+        // Toggle seat selection
+        function toggleSeatSelection() {
+            if (this.classList.contains('occupied')) {
+                return; // Cannot select occupied seats
+            }
+            
+            const seatNumber = this.dataset.seatNumber;
+            
+            if (this.classList.contains('selected')) {
+                // Deselect seat
+                this.classList.remove('selected');
+                selectedSeats = selectedSeats.filter(seat => seat !== seatNumber);
+            } else {
+                // Select seat
+                this.classList.add('selected');
+                selectedSeats.push(seatNumber);
+            }
+            
+            updateSelectedSeats();
+        }
+        
+        // Update selected seats display
+        function updateSelectedSeats() {
+            const selectedSeatsContainer = document.getElementById('selectedSeats');
+            const totalSeatPriceElement = document.getElementById('totalSeatPrice');
+            const numberOfSeatsElement = document.getElementById('numberOfSeats');
+            
+            // Clear previous selections
+            selectedSeatsContainer.innerHTML = '';
+            
+            // Add selected seat tags
+            selectedSeats.forEach(seat => {
+                const seatTag = document.createElement('div');
+                seatTag.className = 'selected-seat-tag';
+                seatTag.textContent = seat;
+                selectedSeatsContainer.appendChild(seatTag);
+            });
+            
+            // Update price and count
+            const totalPrice = selectedSeats.length * seatPrice;
+            totalSeatPriceElement.value = `₹${totalPrice.toFixed(2)}`;
+            numberOfSeatsElement.value = selectedSeats.length;
+        }
+        
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // Remove selected class from all payment methods
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked method
+                this.classList.add('selected');
+                
+                // Hide all payment forms
+                document.querySelectorAll('.payment-form').forEach(form => {
+                    form.style.display = 'none';
+                });
+                
+                // Show selected payment form
+                const methodType = this.dataset.method;
+                document.getElementById(`${methodType}Form`).style.display = 'block';
+            });
+        });
+        
+        // Update payment summary
+        function updatePaymentSummary() {
+            const hotelPriceElement = document.getElementById('hotelPrice');
+            const busTicketPriceElement = document.getElementById('busTicketPrice');
+            const totalAmountElement = document.getElementById('totalAmount');
+            
+            // Calculate values
+            const hotelBookingPrice = hotelPrice || 0;
+            const busTicketPrice = selectedSeats.length * seatPrice;
+            const totalAmount = hotelBookingPrice + busTicketPrice;
+            
+            // Update display
+            hotelPriceElement.textContent = `₹${hotelBookingPrice.toFixed(2)}`;
+            busTicketPriceElement.textContent = `₹${busTicketPrice.toFixed(2)}`;
+            totalAmountElement.textContent = `₹${totalAmount.toFixed(2)}`;
+        }
+        
+        // Format card number input
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+        
+        // Format expiry date input
+        document.getElementById('cardExpiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+        
+        // Rating stars
+        const ratingStars = document.querySelectorAll('#overallRating i');
+        let selectedRating = 0;
+        
+        ratingStars.forEach(star => {
+            star.addEventListener('click', function() {
+                selectedRating = parseInt(this.getAttribute('data-rating'));
+                updateRatingStars();
+            });
+            
+            star.addEventListener('mouseover', function() {
+                const hoverRating = parseInt(this.getAttribute('data-rating'));
+                highlightStars(hoverRating);
+            });
+        });
+        
+        document.getElementById('overallRating').addEventListener('mouseleave', function() {
+            updateRatingStars();
+        });
+        
+        function updateRatingStars() {
+            ratingStars.forEach((star, index) => {
+                if (index < selectedRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        function highlightStars(rating) {
+            ratingStars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        // Modal functionality
+        const loginModal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const modalClose = document.querySelector('.modal-close');
+        
+        loginBtn.addEventListener('click', function() {
+            loginModal.style.display = 'flex';
+        });
+        
+        modalClose.addEventListener('click', function() {
+            loginModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Form submission
+        document.getElementById('travelForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                source: document.getElementById('source').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                destination: document.getElementById('destination').value,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                travelers: document.getElementById('travelers').value,
+                travelerType: document.querySelector('input[name="travelerType"]:checked')?.value,
+                preferences: selectedPreferences,
+                budget: document.getElementById('budget').value,
+                selectedHotel: selectedHotel,
+                selectedBus: selectedBus,
+                selectedSeats: selectedSeats,
+                paymentMethod: document.querySelector('.payment-method.selected')?.dataset.method
+            };
+            
+            // Submit booking to API
+            submitBooking(formData);
+        });
+        
+        // Submit booking to API
+        async function submitBooking(bookingData) {
+            try {
+                const isConnected = await checkApiConnection();
+                
+                if (isConnected) {
+                    // Submit to real API
+                    const response = await fetch(`${API_BASE_URL}/bookings`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(bookingData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        // Show success message
+                        alert('Booking submitted successfully! Booking ID: ' + result.bookingId);
+                        
+                        // Reset form
+                        document.getElementById('travelForm').reset();
+                        currentStep = 1;
+                        updateFormStep();
+                    } else {
+                        // Show error message
+                        alert('Error submitting booking: ' + result.message);
+                    }
+                } else {
+                    // Simulate API call
+                    console.log('Booking Data:', bookingData);
+                    
+                    // Show success message
+                    alert('Your travel plan has been submitted successfully!');
+                    
+                    // Reset form
+                    document.getElementById('travelForm').reset();
+                    currentStep = 1;
+                    updateFormStep();
+                }
+            } catch (error) {
+                console.error('Error submitting booking:', error);
+                alert('Error submitting booking. Please try again.');
+            }
+        }
+        
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect login data
+            const loginData = {
+                email: document.getElementById('loginEmail').value,
+                password: document.getElementById('loginPassword').value
+            };
+            
+            // Submit login to API
+            submitLogin(loginData);
+        });
+        
+        // Submit login to API
+        async function submitLogin(loginData) {
+            try {
+                const isConnected = await checkApiConnection();
+                
+                if (isConnected) {
+                    // Submit to real API
+                    const response = await fetch(`${API_BASE_URL}/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(loginData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        // Close modal
+                        loginModal.style.display = 'none';
+                        
+                        // Update UI to show logged in state
+                        alert('Login successful! Welcome, ' + result.user.name);
+                    } else {
+                        // Show error message
+                        alert('Login failed: ' + result.message);
+                    }
+                } else {
+                    // Simulate API call
+                    console.log('Login Data:', loginData);
+                    
+                    // Close modal
+                    loginModal.style.display = 'none';
+                    
+                    // Update UI to show logged in state
+                    alert('Login successful!');
+                }
+            } catch (error) {
+                console.error('Error submitting login:', error);
+                alert('Error during login. Please try again.');
+            }
+        }
+        
+        // Process payment button
+        document.getElementById('processPayment').addEventListener('click', function() {
+            // Show processing message
+            this.textContent = 'Processing...';
+            this.disabled = true;
+            
+            // Process payment
+            processPayment().then(() => {
+                // Update booking confirmation details
+                const hotelBookingDetails = document.getElementById('hotelBookingDetails');
+                const busBookingDetails = document.getElementById('busBookingDetails');
+                const paymentDetails = document.getElementById('paymentDetails');
+                const hotelBookingConfirmation = document.getElementById('hotelBookingConfirmation');
+                const busBookingConfirmation = document.getElementById('busBookingConfirmation');
+                const paymentConfirmation = document.getElementById('paymentConfirmation');
+                const paymentDate = document.getElementById('paymentDate');
+                
+                hotelBookingDetails.textContent = `${selectedHotel.name} - ${numberOfNights} nights`;
+                busBookingDetails.textContent = `${selectedBus.name} - Seats: ${selectedSeats.join(', ')}`;
+                paymentDetails.textContent = `Payment completed using ${document.querySelector('.payment-method.selected').textContent.trim()}`;
+                hotelBookingConfirmation.textContent = `Confirmation: HTL-${Math.floor(Math.random() * 1000000)}`;
+                busBookingConfirmation.textContent = `Confirmation: BUS-${Math.floor(Math.random() * 1000000)}`;
+                paymentConfirmation.textContent = `Transaction ID: TXN-${Math.floor(Math.random() * 1000000)}`;
+                paymentDate.textContent = `Date: ${new Date().toLocaleDateString()}`;
+                
+                // Move to next step
+                currentStep++;
+                updateFormStep();
+                
+                // Reset button
+                this.textContent = 'Process Payment';
+                this.disabled = false;
+            }).catch(error => {
+                console.error('Payment processing error:', error);
+                alert('Error processing payment. Please try again.');
+                
+                // Reset button
+                this.textContent = 'Process Payment';
+                this.disabled = false;
+            });
+        });
+        
+        // Process payment
+        async function processPayment() {
+            const selectedPaymentMethod = document.querySelector('.payment-method.selected');
+            const methodType = selectedPaymentMethod.dataset.method;
+            
+            // Get payment details based on method type
+            let paymentDetails = {};
+            
+            if (methodType === 'card') {
+                paymentDetails = {
+                    cardNumber: document.getElementById('cardNumber').value,
+                    cardName: document.getElementById('cardName').value,
+                    cardExpiry: document.getElementById('cardExpiry').value,
+                    cardCVC: document.getElementById('cardCVC').value
+                };
+            } else if (methodType === 'paypal') {
+                paymentDetails = {
+                    email: document.getElementById('paypalEmail').value,
+                    password: document.getElementById('paypalPassword').value
+                };
+            } else if (methodType === 'wallet') {
+                paymentDetails = {
+                    walletNumber: document.getElementById('walletNumber').value,
+                    walletPin: document.getElementById('walletPin').value
+                };
+            } else if (methodType === 'bank') {
+                paymentDetails = {
+                    bankAccount: document.getElementById('bankAccount').value,
+                    bankRouting: document.getElementById('bankRouting').value
+                };
+            }
+            
+            try {
+                const isConnected = await checkApiConnection();
+                
+                if (isConnected) {
+                    // Process payment with real API
+                    const response = await fetch(`${API_BASE_URL}/payment`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            method: methodType,
+                            details: paymentDetails,
+                            amount: calculateTotalAmount()
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(result.message || 'Payment failed');
+                    }
+                    
+                    return result;
+                } else {
+                    // Simulate payment processing
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve({
+                                success: true,
+                                transactionId: 'TXN-' + Math.floor(Math.random() * 1000000)
+                            });
+                        }, 2000);
+                    });
+                }
+            } catch (error) {
+                throw error;
+            }
+        }
+        
+        // Calculate total amount
+        function calculateTotalAmount() {
+            const hotelBookingPrice = hotelPrice || 0;
+            const busTicketPrice = selectedSeats.length * seatPrice;
+            
+            return hotelBookingPrice + busTicketPrice;
+        }
+        
+        // Download ticket button
+        document.getElementById('downloadTicket').addEventListener('click', function() {
+            // Simulate ticket download
+            alert('E-ticket downloaded successfully!');
+        });
+        
+        // Share booking button
+        document.getElementById('shareBooking').addEventListener('click', function() {
+            // Simulate sharing functionality
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SmartTour Booking',
+                    text: `I've booked my trip to ${document.getElementById('destination').value} with SmartTour!`,
+                    url: window.location.href
+                });
+            } else {
+                alert('Booking details copied to clipboard!');
+            }
+        });
+        
+        // Submit review button
+        document.getElementById('submitReview').addEventListener('click', function() {
+            const reviewText = document.getElementById('review').value;
+            
+            if (reviewText.trim() === '') {
+                alert('Please write a review before submitting.');
+                return;
+            }
+            
+            // Submit review to API
+            submitReview({
+                rating: selectedRating,
+                text: reviewText
+            });
+        });
+        
+        // Submit review to API
+        async function submitReview(reviewData) {
+            try {
+                const isConnected = await checkApiConnection();
+                
+                if (isConnected) {
+                    // Submit to real API
+                    const response = await fetch(`${API_BASE_URL}/reviews`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(reviewData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        alert('Thank you for your review!');
+                    } else {
+                        alert('Error submitting review: ' + result.message);
+                    }
+                } else {
+                    // Simulate review submission
+                    console.log('Review Data:', reviewData);
+                    alert('Thank you for your review!');
+                }
+                
+                // Reset review form
+                document.getElementById('review').value = '';
+                selectedRating = 0;
+                updateRatingStars();
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                alert('Error submitting review. Please try again.');
+            }
+        }
+        
+        // Mock data functions
+        function getMockHotels() {
+            return [
+                {
+                    id: 1,
+                    name: 'Budget Stay Lodge',
+                    type: 'Budget Hotel',
+                    rating: 3.5,
+                    price: 1500,
+                    features: ['Free WiFi', 'Breakfast', '24/7 Reception'],
+                    image: null
+                },
+                {
+                    id: 2,
+                    name: 'City Inn',
+                    type: 'Economy Hotel',
+                    rating: 4.0,
+                    price: 2500,
+                    features: ['Free WiFi', 'AC', 'Complimentary Breakfast'],
+                    image: null
+                },
+                {
+                    id: 3,
+                    name: 'Comfort Stay',
+                    type: 'Mid-range Hotel',
+                    rating: 4.2,
+                    price: 3500,
+                    features: ['Free WiFi', 'AC', 'Swimming Pool', 'Gym'],
+                    image: null
+                },
+                {
+                    id: 4,
+                    name: 'Grand City Hotel',
+                    type: 'Luxury Hotel',
+                    rating: 4.7,
+                    price: 6000,
+                    features: ['Free WiFi', 'Breakfast', 'Pool', 'Spa'],
+                    image: null
+                },
+                {
+                    id: 5,
+                    name: 'Heritage Resort',
+                    type: 'Luxury Resort',
+                    rating: 4.8,
+                    price: 8000,
+                    features: ['Free WiFi', 'All Meals', 'Pool', 'Spa', 'Gym'],
+                    image: null
+                }
+            ];
+        }
+        
+        function getMockNearbyPlaces() {
+            return [
+                {
+                    name: 'City Museum',
+                    distance: '0.5 km',
+                    category: 'Cultural Site',
+                    icon: 'fas fa-landmark'
+                },
+                {
+                    name: 'Shopping Mall',
+                    distance: '0.8 km',
+                    category: 'Shopping',
+                    icon: 'fas fa-shopping-bag'
+                },
+                {
+                    name: 'Food Street',
+                    distance: '1.2 km',
+                    category: 'Dining',
+                    icon: 'fas fa-utensils'
+                },
+                {
+                    name: 'Central Park',
+                    distance: '1.5 km',
+                    category: 'Nature',
+                    icon: 'fas fa-tree'
+                },
+                {
+                    name: 'Theater',
+                    distance: '0.7 km',
+                    category: 'Entertainment',
+                    icon: 'fas fa-theater-masks'
+                },
+                {
+                    name: 'Nightlife District',
+                    distance: '1.0 km',
+                    category: 'Nightlife',
+                    icon: 'fas fa-cocktail'
+                }
+            ];
+        }
+        
+        function getMockBuses() {
+            return [
+                {
+                    id: 1,
+                    name: 'Economy Express',
+                    departureTime: '09:00 AM',
+                    arrivalTime: '01:30 PM',
+                    duration: '4h 30m',
+                    price: 500,
+                    features: ['AC', 'Comfortable Seats']
+                },
+                {
+                    id: 2,
+                    name: 'Budget Travels',
+                    departureTime: '11:30 AM',
+                    arrivalTime: '04:45 PM',
+                    duration: '5h 15m',
+                    price: 600,
+                    features: ['AC', 'Comfortable Seats']
+                },
+                {
+                    id: 3,
+                    name: 'Standard Comfort',
+                    departureTime: '01:00 PM',
+                    arrivalTime: '05:30 PM',
+                    duration: '4h 30m',
+                    price: 800,
+                    features: ['WiFi', 'AC', 'Reclining Seats']
+                },
+                {
+                    id: 4,
+                    name: 'Express Comfort',
+                    departureTime: '03:00 PM',
+                    arrivalTime: '07:30 PM',
+                    duration: '4h 30m',
+                    price: 1000,
+                    features: ['WiFi', 'AC', 'Reclining Seats', 'Snacks']
+                },
+                {
+                    id: 5,
+                    name: 'Luxury Sleeper',
+                    departureTime: '10:00 PM',
+                    arrivalTime: '02:45 AM (+1)',
+                    duration: '4h 45m',
+                    price: 1500,
+                    features: ['WiFi', 'AC', 'Sleeper Seats', 'Snacks', 'Blanket']
+                }
+            ];
+        }
+        
+        // Initialize form
+        updateFormStep();
+        
+        // Check API connection on page load
+        checkApiConnection();
+    </script>
+</body>
+</html>
